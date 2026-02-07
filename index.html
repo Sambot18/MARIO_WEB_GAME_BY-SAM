@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>V3ilynShade</title>
+
+<script src="jquery-3.5.1.min.js"></script>
+<script src="gameengine.js"></script>
+
+<style>
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: #f5f6fb;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+}
+
+.app {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* HEADER */
+.header {
+    height: 60px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    gap: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,.08);
+}
+.logo {
+    width: 34px;
+    height: 34px;
+}
+.brand {
+    font-weight: 800;
+    font-size: 20px;
+    color: #5b4ae6;
+}
+
+/* GAME */
+.game-wrapper {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 14px;
+}
+.screen-frame {
+    width: 100%;
+    max-width: 520px;
+    background: #000;
+    border-radius: 18px;
+    padding: 8px;
+    box-shadow: 0 10px 25px rgba(0,0,0,.35);
+}
+#stage {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    background: #7fc1ee;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+/* HUD */
+#stats_pane {
+    position: absolute;
+    top: 10px;
+    left: 12px;
+    background: rgba(0,0,0,.35);
+    padding: 5px 10px;
+    border-radius: 8px;
+    color: #fff;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+/* CONTROLS */
+.controls {
+    background: #fff;
+    padding: 14px 0 8px;
+    box-shadow: 0 -2px 12px rgba(0,0,0,.08);
+}
+.controls-inner {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 40px;
+}
+
+/* Button groups */
+.control-group {
+    display: flex;
+    gap: 12px;
+}
+
+/* Buttons */
+.control-group button {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    border: none;
+    background: #5b4ae6;
+    color: #fff;
+    font-size: 18px;
+    box-shadow: 0 6px 14px rgba(91,74,230,.4);
+}
+.control-group button:active {
+    transform: scale(.9);
+}
+
+/* FOOTER */
+.footer {
+    text-align: center;
+    font-size: 13px;
+    color: #777;
+    padding-bottom: 10px;
+}
+.footer span {
+    color: #5b4ae6;
+    font-weight: bold;
+}
+
+* {
+    user-select: none;
+    -webkit-user-select: none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- HEADER -->
+    <div class="header">
+        <img src="logo.png" class="logo" alt="logo">
+        <div class="brand">V3ilynShade</div>
+    </div>
+
+    <!-- GAME -->
+    <div class="game-wrapper">
+        <div class="screen-frame">
+            <div id="stage">
+                <div id="stats_pane">
+                    <img src="coin.gif" height="14"> x <span id="coin_counter">0</span>
+                </div>
+                <img id="sprite" class="mario_small">
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTROLS -->
+    <div class="controls">
+        <div class="controls-inner">
+
+            <!-- LEFT / RIGHT -->
+            <div class="control-group">
+                <button id="btn-left">◄</button>
+                <button id="btn-right">►</button>
+            </div>
+
+            <!-- UP / DOWN -->
+            <div class="control-group">
+                <button id="btn-up">▲</button>
+                <button id="btn-down">▼</button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+        made with ❤️ by <span>SAM</span>
+    </div>
+
+</div>
+
+<audio id="audio_overworld" src="overworld.mp3" loop></audio>
+
+<script>
+$(function(){
+    const L=37, R=39, U=38, D=40;
+    function fire(type, code){
+        let e = $.Event(type);
+        e.which = code;
+        $(document).trigger(e);
+    }
+
+    $('#btn-left').on('touchstart mousedown',()=>fire('keydown',L))
+                 .on('touchend mouseup',()=>fire('keyup',L));
+    $('#btn-right').on('touchstart mousedown',()=>fire('keydown',R))
+                  .on('touchend mouseup',()=>fire('keyup',R));
+    $('#btn-up').on('touchstart mousedown',()=>fire('keydown',U))
+               .on('touchend mouseup',()=>fire('keyup',U));
+    $('#btn-down').on('touchstart mousedown',()=>fire('keydown',D))
+                 .on('touchend mouseup',()=>fire('keyup',D));
+
+    $(document).one('touchstart keydown',()=>{
+        document.getElementById('audio_overworld')?.play();
+    });
+});
+</script>
+
+</body>
+</html>
